@@ -1,28 +1,5 @@
 
 function boardFactory () {
-    let board = []
-
-    // create a 2-dimensional array representing chess board 
-    for (let i = 0; i < 8; i++) {
-        let row = []
-        for (let j = 0; j < 8; j++) {
-            let field = [i, j]
-            row.push(field)
-        }
-        board.push(row)
-    }
-
-    const printBoard = () => {
-        board.forEach(row => {
-            let printedRow = ''
-            row.forEach(field => {
-                printedRow += `| ${field} |`
-            })
-            console.log(printedRow)
-            console.log('-----------------------------------------------------------')
-        })
-    }
-
     function showPossibleMoves(node, visitedMoves) {
         let x = node.data[0]
         let y = node.data[1]
@@ -51,7 +28,7 @@ function boardFactory () {
         }
 
         let root = {
-            data: board[startPosition[0]][startPosition[1]],
+            data: startPosition,
             adjMoves: []
         }
         let queue = []
@@ -81,9 +58,13 @@ function boardFactory () {
 
             currNode = queue[0]
             queue.shift()
+            
+            // Stingifying arrays for comparision
             let currNodeStringified = JSON.stringify(currNode.data)
             let visitedMovesStringified = JSON.stringify(visitedMoves)
             let indexOfNode = visitedMovesStringified.indexOf(currNodeStringified)
+
+            // reducing the number of moves evaluated
             if (indexOfNode === -1){
             visitedMoves.push(currNode.data)
             currNode.adjMoves.forEach(move => {
@@ -94,16 +75,10 @@ function boardFactory () {
          }
         }
     
-
     return {
-        printBoard,
         knightMoves,
         showPossibleMoves
     }
 }
-
-
-
-
 
 export {boardFactory}
